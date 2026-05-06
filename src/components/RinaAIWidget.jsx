@@ -39,7 +39,7 @@ export default function RinaAIWidget({ hotelData, rooms }) {
 
       // Initialize the SDK
       const agentManager = await createAgentManager(DID_AGENT_ID, {
-        auth: { type: 'client-key', clientKey: DID_AGENT_CLIENT_KEY },
+        auth: { type: 'key', clientKey: DID_AGENT_CLIENT_KEY },
         callbacks
       });
 
@@ -69,4 +69,24 @@ export default function RinaAIWidget({ hotelData, rooms }) {
     return () => {
       if (agentManagerRef.current) agentManagerRef.current.disconnect();
     };
-}, [])};
+}, []);
+
+  return (
+    <div style={{ position: "fixed", bottom: 20, right: 20, width: 300, padding: 10, backgroundColor: "#fff", borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}>
+      <video ref={videoRef} autoPlay muted style={{ width: "100%", borderRadius: 8 }} />
+      <div style={{ marginTop: 10 }}>
+        {status === "idle" && <button onClick={connectAgent} style={{ width: "100%", padding: 10, backgroundColor: "#007bff", color: "#fff", border: "none", borderRadius: 4 }}>Chat with Rina</button>}
+        {status === "connecting..." && <p>Connecting to Rina...</p>}
+        {status === "connected" && (
+          <div>
+            <input 
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
